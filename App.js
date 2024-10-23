@@ -1,20 +1,28 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, SafeAreaView, View } from "react-native";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
 
+import LubrifiantForm from "./components/LubrifiantForm";
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+    <SafeAreaView style={styles.container}>
+    <Header />
+    <View style={styles.content}>
+      <LubrifiantForm/>
+      {/* Main content of the app can go here */}
     </View>
+    <Footer />
+  </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: '#f5f5f5',
+  },
+  content: {
+    flex: 1, // Expands to take up available space between header and footer
   },
 });
