@@ -1,38 +1,98 @@
-import React, { useState } from "react";
-import { StyleSheet, View, Text, ScrollView, Button } from "react-native";
+import React, { useState, useEffect } from "react";
+import {
+  StyleSheet,
+  View,
+  Text,
+  ScrollView,
+  Button,
+  TextInput,
+} from "react-native";
 import DropdownComponent from "./DropdownComponent";
-import DateTimePicker from "react-native-ui-datepicker"; // Assurez-vous d'importer le bon DatePicker
+import DateTimePicker from "react-native-ui-datepicker";
 import dayjs from "dayjs";
-
-const pompeData = [
-  { label: "Pompe 1", value: "pompe1" },
-  { label: "Pompe 2", value: "pompe2" },
-];
-
-const pompisteData = [
-  { label: "Pompiste 1", value: "pompiste1" },
-  { label: "Pompiste 2", value: "pompiste2" },
-];
-
-const lubrifiantData = [
-  { label: "AC 1", value: "ac1" },
-  { label: "QTE 100", value: "100" },
-  { label: "QTE 200", value: "200" },
-];
-
+import {
+  fetchLubrifiants,
+  fetchPompes,
+  fetchPompistes,
+} from "../services/services";
+import { url } from "../services/url";
+import { Alert } from "react-native";
 const LubrifiantForm = () => {
+  const [pompeData, setPompeData] = useState([]);
+  const [pompisteData, setPompisteData] = useState([]);
+  const [lubrifiantData, setLubrifiantData] = useState([]);
   const [pompe, setPompe] = useState(null);
   const [pompiste, setPompiste] = useState(null);
   const [lubrifiant, setLubrifiant] = useState(null);
   const [date, setDate] = useState(new Date());
-  const [showDatePicker, setShowDatePicker] = useState(false); // New state for controlling date picker visibility
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [qte, setQte] = useState(""); // State for quantity input
 
-  const validateAndSubmit = () => {
-    if (!pompe || !pompiste || !lubrifiant || !date) {
-      alert("Please fill all fields");
+  useEffect(() => {
+    fetchPompes().then((data) => {
+      setPompeData(
+        data.map((pompe) => ({
+          label: pompe.numeroPompe,
+          value: pompe.idPompe,
+        }))
+      );
+    });
+    fetchPompistes().then((data) => {
+      setPompisteData(
+        data.map((pompiste) => ({
+          label: pompiste.nomPompiste,
+          value: pompiste.idPompiste,
+        }))
+      );
+    });
+    fetchLubrifiants().then((data) => {
+      setLubrifiantData(
+        data.map((lubrifiant) => ({
+          label: lubrifiant.nom,
+          value: lubrifiant.id,
+        }))
+      );
+    });
+  }, []);
+
+  const validateAndSubmit = async () => {
+    if (!pompe || !pompiste || !lubrifiant || !date || !qte) {
+      alert("Validation Error : Please fill all fields");
       return;
     }
-    alert(`Form submitted successfully! \nDate: ${dayjs(date).format("YYYY-MM-DD")}`);
+
+    // Prepare data to send
+    const payload = {
+      pompe: pompe,
+      pompiste: pompiste,
+      lubrifiant: lubrifiant,
+      dateTime: dayjs(date).format("YYYY-MM-DDTHH:mm:ssZ"), // ISO format
+      qte: parseFloat(qte), // Use the quantity from input
+      pu: 2000.0, // Set a fixed unit price for demonstration
+    };
+    console.log("Payload:", payload);
+
+    try {
+      const response = await fetch(`${url}/prelev_lub`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (response.ok) {
+        const result = await response;
+        message = await result.text();
+        alert("Success: " + message); // Optionally alert the success message
+      } else {
+        const error = await response.text();
+        alert("Error: " + error);
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      alert("Network Error " + error);
+    }
   };
 
   return (
@@ -64,6 +124,15 @@ const LubrifiantForm = () => {
           onChange={setLubrifiant}
         />
 
+        {/* Input for Quantity */}
+        <TextInput
+          style={styles.input}
+          placeholder="Enter Quantity"
+          keyboardType="numeric"
+          value={qte}
+          onChangeText={setQte}
+        />
+
         {/* Button to toggle DatePicker visibility */}
         <Button
           title={showDatePicker ? "Hide Date Picker" : "Show Date Picker"}
@@ -75,9 +144,10 @@ const LubrifiantForm = () => {
           <View style={styles.datePickerContainer}>
             <Text style={styles.date}>Select Date</Text>
             <DateTimePicker
-               mode="single"
-        date={date}
-        onChange={(params) => setDate(params.date)}
+              mode="single"
+              date={date}
+              timePicker={true}
+              onChange={(params) => setDate(params.date)}
             />
           </View>
         )}
@@ -100,10 +170,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#f7f7f7",
   },
   panel: {
+    justifyContent: "center",
     width: "90%",
     maxWidth: 400,
-    padding: 16,
     backgroundColor: "white",
+    padding: 16,
     borderRadius: 10,
     elevation: 3,
   },
@@ -112,6 +183,14 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 16,
     textAlign: "center",
+  },
+  input: {
+    height: 40,
+    borderColor: "gray",
+    borderWidth: 1,
+    borderRadius: 5,
+    paddingLeft: 10,
+    marginTop: 10,
   },
   datePickerContainer: {
     marginTop: 20,

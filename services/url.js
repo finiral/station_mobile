@@ -1,0 +1,1 @@
+export const url="http://localhost:8080/fini_station-war/station_rest";
