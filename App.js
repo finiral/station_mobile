@@ -1,28 +1,44 @@
-import { StyleSheet, SafeAreaView, View } from "react-native";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
-
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import StockScreen from "./components/StockScreen";
 import LubrifiantForm from "./components/LubrifiantForm";
+import VenteScreen from './components/VenteScreen';
+import CustomTabBar from './components/CustomTabBar';
+
+const Tab = createBottomTabNavigator();
+
 export default function App() {
   return (
-    <SafeAreaView style={styles.container}>
-    <Header />
-    <View style={styles.content}>
-      <LubrifiantForm/>
-      {/* Main content of the app can go here */}
-    </View>
-    <Footer />
-  </SafeAreaView>
+    <NavigationContainer>
+      <Tab.Navigator
+        initialRouteName="Prelevement"
+        tabBar={(props) => <CustomTabBar {...props} />}
+      >
+        <Tab.Screen
+          name="Prelevement"
+          component={LubrifiantForm}
+          options={{
+            title: 'Prélever',
+            tabBarIcon: 'local-gas-station',
+          }}
+        />
+        <Tab.Screen
+          name="Ventes"
+          component={VenteScreen}
+          options={{
+            title: 'Ventes',
+            tabBarIcon: 'attach-money',
+          }}
+        />
+        <Tab.Screen
+          name="Stock"
+          component={StockScreen}
+          options={{
+            title: 'État de stock',
+            tabBarIcon: 'inventory',
+          }}
+        />
+      </Tab.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'space-between',
-    backgroundColor: '#f5f5f5',
-  },
-  content: {
-    flex: 1, // Expands to take up available space between header and footer
-  },
-});

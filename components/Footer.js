@@ -1,31 +1,28 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons'; // Or use react-native-vector-icons
+import { MaterialIcons } from '@expo/vector-icons';
 
-const Footer = () => {
+const Footer = ({ navigation }) => {
   return (
     <View style={styles.footer}>
-      <TouchableOpacity style={styles.actionContainer} onPress={() => {}}>
+      <TouchableOpacity style={styles.actionContainer} onPress={() => navigation.navigate('Prelevement')}>
         <View style={styles.action}>
           <MaterialIcons name="local-gas-station" size={24} color="black" />
           <Text style={styles.actionText}>Prélever</Text>
         </View>
       </TouchableOpacity>
-
-      <TouchableOpacity style={styles.actionContainer} onPress={() => {}}>
+      <TouchableOpacity style={styles.actionContainer} onPress={() => navigation.navigate('Ventes')}>
         <View style={styles.action}>
           <MaterialIcons name="attach-money" size={24} color="black" />
           <Text style={styles.actionText}>Ventes</Text>
         </View>
       </TouchableOpacity>
-
-      <TouchableOpacity style={styles.actionContainer} onPress={() => {}}>
+      <TouchableOpacity style={styles.actionContainer} onPress={() => navigation.navigate('Stock')}>
         <View style={styles.action}>
           <MaterialIcons name="inventory" size={24} color="black" />
           <Text style={styles.actionText}>État de stock</Text>
         </View>
       </TouchableOpacity>
-      
     </View>
   );
 };
@@ -40,17 +37,17 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
   },
   actionContainer: {
-    flex: 1,  // Make each button take up equal space
-    backgroundColor: '#d6f6ee',  
+    flex: 1,
+    backgroundColor: '#d6f6ee',
     paddingVertical: 1,
-    paddingBottom: 5,  // Add space between icon and text
-    marginHorizontal: 10,  // Add space between buttons
-    borderRadius: 10,  // Rounded corners
+    paddingBottom: 5,
+    marginHorizontal: 10,
+    borderRadius: 10,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.2,
     shadowRadius: 3,
-    elevation: 3,  // For Android shadow
+    elevation: 3,
   },
   action: {
     alignItems: 'center',
