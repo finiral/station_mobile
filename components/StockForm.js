@@ -17,34 +17,14 @@ import {
 } from "../services/services";
 import { url } from "../services/url";
 import { Alert } from "react-native";
-const LubrifiantForm = () => {
-  const [pompeData, setPompeData] = useState([]);
-  const [pompisteData, setPompisteData] = useState([]);
+const StockForm = () => {
   const [lubrifiantData, setLubrifiantData] = useState([]);
-  const [pompe, setPompe] = useState(null);
-  const [pompiste, setPompiste] = useState(null);
   const [lubrifiant, setLubrifiant] = useState(null);
   const [date, setDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [qte, setQte] = useState(""); // State for quantity input
 
   useEffect(() => {
-    fetchPompes().then((data) => {
-      setPompeData(
-        data.map((pompe) => ({
-          label: pompe.numeroPompe,
-          value: pompe.idPompe,
-        }))
-      );
-    });
-    fetchPompistes().then((data) => {
-      setPompisteData(
-        data.map((pompiste) => ({
-          label: pompiste.nomPompiste,
-          value: pompiste.idPompiste,
-        }))
-      );
-    });
     fetchLubrifiants().then((data) => {
       setLubrifiantData(
         data.map((lubrifiant) => ({
@@ -98,24 +78,7 @@ const LubrifiantForm = () => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.panel}>
-        <Text style={styles.title}>Prelevement de lubrifiant</Text>
-
-        {/* Select Pompe */}
-        <DropdownComponent
-          label="Select Pompe"
-          data={pompeData}
-          value={pompe}
-          onChange={setPompe}
-        />
-
-        {/* Select Pompiste */}
-        <DropdownComponent
-          label="Select Pompiste"
-          data={pompisteData}
-          value={pompiste}
-          onChange={setPompiste}
-        />
-
+        <Text style={styles.title}>Insertion stock</Text>
         {/* Select Lubrifiant */}
         <DropdownComponent
           label="Select Lubrifiant"
@@ -154,7 +117,7 @@ const LubrifiantForm = () => {
 
         {/* Submit Button */}
         <View style={styles.button}>
-          <Button title="Prelever" color="#28eb76" onPress={validateAndSubmit} />
+          <Button title="Inserer stock" color="#28eb76" onPress={validateAndSubmit} />
         </View>
       </View>
     </ScrollView>
@@ -207,4 +170,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LubrifiantForm;
+export default StockForm;

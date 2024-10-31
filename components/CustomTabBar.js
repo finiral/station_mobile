@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     height: 4,
     width: `${100 / 3}%`, // Adjust based on the number of tabs
-    backgroundColor: '#2161eb',
+    backgroundColor: '#28eb76',
     top: 0,
     transition: 'left 0.2s', // Smooth transition for the emphasis bar
   },

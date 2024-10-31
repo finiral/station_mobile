@@ -1,11 +1,14 @@
-import React from 'react';
-import { View, Text } from 'react-native';
-import Stocks from './Stocks';
-
+import React from "react";
+import { View, Text, ScrollView } from "react-native";
+import Stocks from "./Stocks";
+import StockForm from "./StockForm";
 const StockScreen = () => (
-  <View /* style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} */>
-    <Stocks></Stocks>
-  </View>
+  <ScrollView>
+    <View>
+      <StockForm></StockForm>
+      <Stocks></Stocks>
+    </View>
+  </ScrollView>
 );
 
 export default StockScreen;

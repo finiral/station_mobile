@@ -29,3 +29,13 @@ export const fetchLubrifiants = async () => {
       console.error("Error fetching lubrifiants:", error);
     }
   };
+
+  export const fetchStock = async () => {
+    try {
+      const response = await fetch(`${url}/stocks/lubrifiants`);
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Error fetching stock lubrifiants:", error);
+    }
+  };

@@ -13,6 +13,15 @@ export default function App() {
       <Tab.Navigator
         initialRouteName="Prelevement"
         tabBar={(props) => <CustomTabBar {...props} />}
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: '#49de85', // Header background color
+          },
+          headerTintColor: '#fff', // Header text color
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
       >
         <Tab.Screen
           name="Prelevement"

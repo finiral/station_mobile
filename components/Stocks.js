@@ -1,29 +1,33 @@
 // Stocks.js
-import React from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, FlatList, StyleSheet, ActivityIndicator } from 'react-native';
+import { fetchStock } from '../services/services';
 
 const Stocks = () => {
-  // Sample data
-  const stockData = [
-    { id: 'PRD001', IdProduit: 'PRD001', Entree: 50, Sortie: 20, Reste: 30, PuVente: 500 },
-    { id: 'PRD002', IdProduit: 'PRD002', Entree: 70, Sortie: 10, Reste: 60, PuVente: 700 },
-    { id: 'PRD003', IdProduit: 'PRD003', Entree: 30, Sortie: 5, Reste: 25, PuVente: 400 },
-    { id: 'PRD004', IdProduit: 'PRD004', Entree: 90, Sortie: 30, Reste: 60, PuVente: 800 },
-  ];
+  const [stocks, setStocks] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    
+    fetchStock().then((data) => {
+      setStocks(data);
+      setLoading(false);
+    });
+  }, []);
 
   const renderItem = ({ item }) => (
     <View style={styles.row}>
-      <Text style={styles.cell}>{item.IdProduit}</Text>
-      <Text style={styles.cell}>{item.Entree}</Text>
-      <Text style={styles.cell}>{item.Sortie}</Text>
-      <Text style={styles.cell}>{item.Reste}</Text>
-      <Text style={styles.cell}>{item.PuVente}</Text>
+      <Text style={styles.cell}>{item.idProduitLib}</Text>
+      <Text style={styles.cell}>{item.entree}</Text>
+      <Text style={styles.cell}>{item.sortie}</Text>
+      <Text style={styles.cell}>{item.reste}</Text>
+      <Text style={styles.cell}>{item.puVente}</Text>
     </View>
   );
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Etat de stock</Text>
+      <Text style={styles.title}>Stock de lubrifiant</Text>
       <View style={styles.tableHeader}>
         <Text style={styles.headerCell}>IdProduit</Text>
         <Text style={styles.headerCell}>Entree</Text>
@@ -31,11 +35,16 @@ const Stocks = () => {
         <Text style={styles.headerCell}>Reste</Text>
         <Text style={styles.headerCell}>PuVente</Text>
       </View>
-      <FlatList
-        data={stockData}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-      />
+      
+      {loading ? (
+        <ActivityIndicator size="large" color="#34eb7d" style={styles.loading} />
+      ) : (
+        <FlatList
+          data={stocks}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+        />
+      )}
     </View>
   );
 };
@@ -44,6 +53,7 @@ const styles = StyleSheet.create({
   container: {
     padding: 10,
     backgroundColor: '#f5f5f5',
+    flex: 1,
   },
   title: {
     fontSize: 20,
@@ -75,6 +85,9 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 14,
     textAlign: 'center',
+  },
+  loading: {
+    marginTop: 20,
   },
 });
 
