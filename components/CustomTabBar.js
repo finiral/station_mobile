@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
   tabContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    backgroundColor: '#d6f6ee',
+    backgroundColor: '#ffffff',
     height: 60,
     borderTopWidth: 1,
     borderColor: '#ccc',
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     height: 4,
     width: `${100 / 3}%`, // Adjust based on the number of tabs
-    backgroundColor: '#b3e6d1',
+    backgroundColor: '#2161eb',
     top: 0,
     transition: 'left 0.2s', // Smooth transition for the emphasis bar
   },

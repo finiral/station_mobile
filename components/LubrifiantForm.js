@@ -98,7 +98,7 @@ const LubrifiantForm = () => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.panel}>
-        <Text style={styles.title}>Lubrifiant Form</Text>
+        <Text style={styles.title}>Prelevement de lubrifiant</Text>
 
         {/* Select Pompe */}
         <DropdownComponent
@@ -154,7 +154,7 @@ const LubrifiantForm = () => {
 
         {/* Submit Button */}
         <View style={styles.button}>
-          <Button title="Validate" onPress={validateAndSubmit} />
+          <Button title="Validate" color="#1ef775" onPress={validateAndSubmit} />
         </View>
       </View>
     </ScrollView>
@@ -191,6 +191,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingLeft: 10,
     marginTop: 10,
+    marginBottom:20
   },
   datePickerContainer: {
     marginTop: 20,
@@ -202,6 +203,7 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 20,
+    tintColor:'#d6f6ee'
   },
 });
 
