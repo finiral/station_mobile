@@ -79,7 +79,7 @@ const StockForm = ({onStockAdded}) => {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView contentContainerStyle={styles.container} nestedScrollEnabled={true}>
       <View style={styles.panel}>
         <Text style={styles.title}>Insertion stock</Text>
         {/* Select Lubrifiant */}

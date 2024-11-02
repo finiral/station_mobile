@@ -96,7 +96,7 @@ const LubrifiantForm = () => {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView contentContainerStyle={styles.container} >
       <View style={styles.panel}>
         <Text style={styles.title}>Prelevement de lubrifiant</Text>
 
@@ -148,7 +148,8 @@ const LubrifiantForm = () => {
               date={date}
               timePicker={true}
               onChange={(params) => setDate(params.date)}
-            />
+              scrollEnabled={false}
+              />
           </View>
         )}
 

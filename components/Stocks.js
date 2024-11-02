@@ -34,6 +34,7 @@ const Stocks = ({stocks,loading}) => {
         <ActivityIndicator size="large" color="#34eb7d" style={styles.loading} />
       ) : (
         <FlatList
+        scrollEnabled={false} 
           data={stocks}
           renderItem={renderItem}
           keyExtractor={(item) =>item.id}
