@@ -17,7 +17,7 @@ import {
 } from "../services/services";
 import { url } from "../services/url";
 import { Alert } from "react-native";
-const StockForm = () => {
+const StockForm = ({onStockAdded}) => {
   const [lubrifiantData, setLubrifiantData] = useState([]);
   const [lubrifiant, setLubrifiant] = useState(null);
   const [date, setDate] = useState(new Date());
@@ -29,42 +29,45 @@ const StockForm = () => {
       setLubrifiantData(
         data.map((lubrifiant) => ({
           label: lubrifiant.nom,
-          value: lubrifiant.id,
+          value: lubrifiant.idCentrale,
         }))
       );
-    });
+    }
+  );
   }, []);
 
   const validateAndSubmit = async () => {
-    if (!pompe || !pompiste || !lubrifiant || !date || !qte) {
+    if (!lubrifiant || !date || !qte) {
       alert("Validation Error : Please fill all fields");
       return;
     }
 
     // Prepare data to send
-    const payload = {
-      pompe: pompe,
-      pompiste: pompiste,
-      lubrifiant: lubrifiant,
-      dateTime: dayjs(date).format("YYYY-MM-DDTHH:mm:ssZ"), // ISO format
-      qte: parseFloat(qte), // Use the quantity from input
-      pu: 2000.0, // Set a fixed unit price for demonstration
-    };
-    console.log("Payload:", payload);
+    const mvtStocksFille = [
+      {
+        idProduit: lubrifiant,
+        entree: qte
+      }
+    ];
+    const idMagasin="POMP001";
+    const timestamp=date.getTime();
+    console.log("mvtStocksFille:", mvtStocksFille);
+    console.log("DATY : ",timestamp);
 
     try {
-      const response = await fetch(`${url}/prelev_lub`, {
+      const response = await fetch(`${url}/stocks?idMagasin=${idMagasin}&timestamp=${timestamp}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(payload),
+        body: JSON.stringify(mvtStocksFille),
       });
 
       if (response.ok) {
         const result = await response;
         message = await result.text();
         alert("Success: " + message); // Optionally alert the success message
+        onStockAdded();
       } else {
         const error = await response.text();
         alert("Error: " + error);
